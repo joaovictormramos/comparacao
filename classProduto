@@ -2,15 +2,72 @@
 
 class Produto
 {
-    public function cadastrarProduto($produto, $marca_id, $medida, $unidadeMedida)
+    private $connection;
+    
+    private $produto;
+    private $marcaId;
+    private $medida;
+    private $unidadeMedida;
+
+    public function getProduto()
     {
+        return $this->produto;
+    }
+
+    public function getMarcaId()
+    {
+        return $this->marcaId;
+    }
+
+    public function getMedida()
+    {
+        return $this->medida;
+    }
+
+    public function getUnidadeMedida()
+    {
+        return $this->unidadeMedida;
+    }
+
+    public function setProduto($produto)
+    {
+        $this->produto = $produto;
+    }
+
+    public function setMarcaId($marcaId)
+    {
+        $this->marcaId = $marcaId;
+    }
+
+    public function setMedida($medida)
+    {
+        $this->medida = $medida;
+    }
+
+    public function setUnidadeMedida($unidadeMedida)
+    {
+        $this->unidadeMedida = $unidadeMedida;
+    }
+
+    public function __construct()
+    {
+        $this->connection = Connect::connectDatabase();
+    }
+
+    public function cadastrarProduto()
+    {
+        $produto = $this->getProduto();
+        $marcaId = $this->getMarcaId();
+        $medida = $this->getMedida();
+        $unidadeMedida = $this->getUnidadeMedida();
+
         $sql = "INSERT INTO tb_pjm_produto(produto_produto, marca_id, produto_medida, produto_unidadeMedida)
-                VALUES (?, ?, ?, ?)";
+        VALUES (?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam(1, $produto, \PDO::PARAM_STR);
-        $stmt->bindParam(2, $marca_id, \PDO::PARAM_INT);
-        $stmt->bindParam(3, $medida, \PDO::PARAM_STR);
-        $stmt->bindParam(4, $unidadeMedida, \PDO::PARAM_STR);
+        $stmt->bindParam(1, $produto());
+        $stmt->bindParam(2, $marcaId());
+        $stmt->bindParam(3, $medida());
+        $stmt->bindParam(4, $unidadeMedida());
         $stmt->execute();
     }
 }
